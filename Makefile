@@ -15,4 +15,4 @@ catclock.c: eyes.p catback.p
 all: catclock
 
 clean:
-	rm -rf catclock
+	rm -rf catclock catclock.o
