@@ -34,7 +34,7 @@ Point tp[NTP]={			/* tail polygon */
 	21,76,
 	21,70,
 };
-#define	NTAIL	16
+#define	NTAIL	64
 Image *eye[NTAIL+1];
 Image *tail[NTAIL+1];
 Image *cat;			/* cat body */
