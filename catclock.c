@@ -1,8 +1,8 @@
 /* Copyright 1985 Massachusetts Institute of Technology */
+#include <u.h>
+#include <libc.h>
 #include <draw.h>
 #include <event.h>
-#include <libc.h>
-#include <u.h>
 
 #define add addpt
 #define sub subpt
