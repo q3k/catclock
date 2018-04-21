@@ -1,0 +1,14 @@
+catclock
+========
+
+    make
+    export PATH="$PATH:/usr/local/plan9/bin" # for devdraw
+    ./catclock
+
+License
+-------
+
+As per the Plan9 LICENSE file (included), the original catclock is:
+
+Copyright (C) 2003, Lucent Technologies Inc. and others. All Rights Reserved.
+
