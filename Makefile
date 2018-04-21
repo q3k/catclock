@@ -1,11 +1,14 @@
 PLAN9 := /usr/local/plan9
-CFLAGS := -I$(PLAN9)/include
-LDFLAGS := -L$(PLAN9)/lib
-LDLIBS := -ldraw -l9 -lmux -lm
+CC := $(PLAN9)/bin/9c
+LD := $(PLAN9)/bin/9l
 
 default: all
 
-catclock: catclock.c
+catclock.o: catclock.c
+	$(CC) "$<"
+
+catclock: catclock.o
+	$(LD) -o "$@" "$^"
 
 catclock.c: eyes.p catback.p
 
