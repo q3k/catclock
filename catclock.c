@@ -73,7 +73,7 @@ eloadimage(Image *i, Rectangle r, uchar *d, int nd)
 	}
 }
 
-int round(double x){
+int round_(double x){
 	return x>=0.?x+.5:x-.5;
 }
 
@@ -132,9 +132,9 @@ void drawhand(int length, int width, double theta){
 	double c=cos(theta), s=sin(theta);
 	double ws=width*s, wc=width*c;
 	Point vhand[4];
-	vhand[0]=add(screen->r.min, add(catoffs, Pt(CATWID/2+round(length*s), CATHGT/2-round(length*c))));
-	vhand[1]=add(screen->r.min, add(catoffs, Pt(CATWID/2-round(ws+wc), CATHGT/2+round(wc-ws))));
-	vhand[2]=add(screen->r.min, add(catoffs, Pt(CATWID/2-round(ws-wc), CATHGT/2+round(wc+ws))));
+	vhand[0]=add(screen->r.min, add(catoffs, Pt(CATWID/2+round_(length*s), CATHGT/2-round_(length*c))));
+	vhand[1]=add(screen->r.min, add(catoffs, Pt(CATWID/2-round_(ws+wc), CATHGT/2+round_(wc-ws))));
+	vhand[2]=add(screen->r.min, add(catoffs, Pt(CATWID/2-round_(ws-wc), CATHGT/2+round_(wc+ws))));
 	vhand[3] = vhand[0];
 	fillpoly(screen, vhand, 4, wind, display->white, 
 		addpt(screen->r.min, vhand[0]));
