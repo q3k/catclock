@@ -1,16 +1,16 @@
-/* Copyright 1985 Massachusetts Institute of Technology */
+// Copyright 1985 Massachusetts Institute of Technology
+// Copyright 2018 Sergiusz Bazanski
+
 #include <u.h>
 #include <libc.h>
 #include <draw.h>
 #include <event.h>
 
-#define add addpt
-#define sub subpt
 int wind = 1;
 
-typedef enum { Odd = 1, Nonzero = ~0 } Windrule;
 #include "catback.p"
 #include "eyes.p"
+
 #define CATWID 150            /* width of body bitmap */
 #define CATHGT 300            /* height of body bitmap */
 #define TAILWID 150           /* width of tail bitmap */
@@ -19,30 +19,36 @@ typedef enum { Odd = 1, Nonzero = ~0 } Windrule;
 #define HOURLEN 15            /* length of hour hand */
 #define HANDWID 4             /* width of clock hands */
 #define UPDATE (1000 / NTAIL) /* ms/update -- tail waves at roughly 1/2 hz */
+
 #define BLACK (~0)
 #define WHITE 0
+
 #define NTP 7
 Point tp[NTP] = {
     /* tail polygon */
     0, 0, 0, 76, 3, 82, 10, 84, 18, 82, 21, 76, 21, 70,
 };
+
 #define NTAIL 64
 Image *eye[NTAIL + 1];
 Image *tail[NTAIL + 1];
 Image *cat;                /* cat body */
 Image *eyes;               /* eye background */
+
 Point toffs = {74, -15};   /* tail polygon offset */
 Point tailoffs = {0, 211}; /* tail bitmap offset, relative to body */
 Point eyeoffs = {49, 30};  /* eye bitmap offset, relative to body */
 Point catoffs;             /* cat offset, relative to screen */
+
 int xredraw;
 int crosseyed;
+
 void drawclock(void);
 void drawhand(int, int, double);
 void init(void);
 Image *draweye(double);
 Image *drawtail(double);
-Image *eballoc(Rectangle, int);
+
 Image *eballoc(Rectangle r, int chan) {
   Image *b = allocimage(display, r, chan, 0, DWhite);
   if (b == 0) {
@@ -110,6 +116,7 @@ void main(int argc, char *argv[]) {
     sleep(UPDATE);
   }
 }
+
 /*
  * Draw a clock hand, theta is clockwise angle from noon
  */
@@ -118,11 +125,11 @@ void drawhand(int length, int width, double theta) {
   double ws = width * s, wc = width * c;
   Point vhand[4];
   vhand[0] =
-      add(screen->r.min, add(catoffs, Pt(CATWID / 2 + round_(length * s),
+      addpt(screen->r.min, addpt(catoffs, Pt(CATWID / 2 + round_(length * s),
                                          CATHGT / 2 - round_(length * c))));
-  vhand[1] = add(screen->r.min, add(catoffs, Pt(CATWID / 2 - round_(ws + wc),
+  vhand[1] = addpt(screen->r.min, addpt(catoffs, Pt(CATWID / 2 - round_(ws + wc),
                                                 CATHGT / 2 + round_(wc - ws))));
-  vhand[2] = add(screen->r.min, add(catoffs, Pt(CATWID / 2 - round_(ws - wc),
+  vhand[2] = addpt(screen->r.min, addpt(catoffs, Pt(CATWID / 2 - round_(ws - wc),
                                                 CATHGT / 2 + round_(wc + ws))));
   vhand[3] = vhand[0];
   fillpoly(screen, vhand, 4, wind, display->white,
@@ -130,6 +137,7 @@ void drawhand(int length, int width, double theta) {
   poly(screen, vhand, 4, Endsquare, Endsquare, 0, display->black,
        addpt(screen->r.min, vhand[0]));
 }
+
 /*
  * draw a cat tail, t is time (mod 1 second)
  */
@@ -143,10 +151,11 @@ Image *drawtail(double t) {
   bp = eballoc(Rect(0, 0, TAILWID, TAILHGT), GREY1);
   for (i = 0; i != NTP; i++)
     rtp[i] =
-        add(Pt(tp[i].x * c + tp[i].y * s, -tp[i].x * s + tp[i].y * c), toffs);
+        addpt(Pt(tp[i].x * c + tp[i].y * s, -tp[i].x * s + tp[i].y * c), toffs);
   fillpoly(bp, rtp, NTP, wind, display->black, rtp[0]);
   return bp;
 }
+
 /*
  * draw the cat's eyes, t is time (mod 1 second)
  */
@@ -202,6 +211,7 @@ Image *draweye(double t) {
   fillpoly(bp, pts, i, wind, display->black, pts[0]);
   return bp;
 }
+
 void drawclock(void) {
   static int t = 0, dt = 1;
   static Tm otm;
@@ -218,8 +228,8 @@ void drawclock(void) {
     drawhand(HOURLEN, HANDWID, 2. * PI * (tm.hour + tm.min / 60.) / 12.);
     xredraw = 0;
   }
-  draw(screen, screen->r, tail[t], nil, mulpt(add(catoffs, tailoffs), -1));
-  draw(screen, screen->r, eye[t], nil, mulpt(add(catoffs, eyeoffs), -1));
+  draw(screen, screen->r, tail[t], nil, mulpt(addpt(catoffs, tailoffs), -1));
+  draw(screen, screen->r, eye[t], nil, mulpt(addpt(catoffs, eyeoffs), -1));
   t += dt;
   if (t < 0 || t > NTAIL) {
     t -= 2 * dt;
